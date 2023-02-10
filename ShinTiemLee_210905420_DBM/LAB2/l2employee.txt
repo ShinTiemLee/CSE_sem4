@@ -1,0 +1,105 @@
+1. Create Employee table with following constraints:
+
+create table Employee (empno numeric(5), emp_name varchar (20), gender varchar(1), salary numeric(6,2), address varchar(20), dno numeric(5));
+
+alter table employee add constraint employee_pk primary key(empno);
+
+alter table employee modify emp_name varchar(20) not null;
+
+alter table employee modify gender varchar(1) not null;
+
+alter table employee modify salary numeric(6,2) not null;
+
+alter table employee modify address varchar(20) not null;
+
+alter table employee add constraint employee_u check(gender in('M','F')); 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Create Department table with following:
+
+create table department(deptno numeric(5), deptname varchar(20), location varchar (20));
+
+alter table department add constraint department_pk primary key(deptno);
+
+alter table department modify deptname varchar(20) unique;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+3. Make DNo of Employee as foreign key which refers to DeptNo of Department.
+
+alter table employee add constraint employee_fk foreign key(dno) references department(deptno);
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+4. Insert few tuples into Employee and Department which satisfies the above constraints.
+
+insert into department values(&deptno,&deptname,&location);
+Enter value for deptno: 1
+Enter value for deptname: 'CSE'
+Enter value for location: 'manipal'
+
+insert into employee values(&empno,&emp_name,&gender,&salary,&address,&dno);
+Enter value for empno: 1
+Enter value for emp_name: 'lee'
+Enter value for gender: 'M'
+Enter value for salary: 9999.69
+Enter value for address: 'mumbai'
+Enter value for dno: 1
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Try to insert few tuples into Employee and Department which violates some of the 
+above constraints.
+
+insert into department values(&deptno,&deptname,&location);
+Enter value for deptno: 1
+Enter value for deptname: 'CSE'
+Enter value for location: 'ka'
+old   1: insert into department values(&deptno,&deptname,&location)
+new   1: insert into department values(1,'CSE','ka')
+insert into department values(1,'CSE','ka')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (DBL63.DEPARTMENT_PK) violated
+
+insert into employee values(&empno,&emp_name,&gender,&salary,&address,&dno);
+Enter value for empno: 1
+Enter value for emp_name: 'shin'
+Enter value for gender: 'Z'
+Enter value for salary: 4555
+Enter value for address: 'bom'
+Enter value for dno: 2
+old   1: insert into employee values(&empno,&emp_name,&gender,&salary,&address,&dno)
+new   1: insert into employee values(1,'shin','Z',4555,'bom',2)
+insert into employee values(1,'shin','Z',4555,'bom',2)
+*
+ERROR at line 1:
+ORA-02290: check constraint (DBL63.EMPLOYEE_U) violated
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Try to modify/delete a tuple which violates a constraint.
+
+delete from department where location='manipal';
+delete from department where location='manipal'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (DBL63.EMPLOYEE_FK) violated - child record
+found
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. Modify the foreign key constraint of Employee table such that whenever a department 
+tuple is deleted, the employees belonging to that department will also be deleted.
+
+alter table employee drop constraint employee_fk;
+
+alter table employee add constraint employee_fk foreign key(dno) references department(deptno) on delete cascade;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+8. Create a named constraint to set the default salary to 10000 and test the constraint by 
+ inserting a new record.
+
+alter table employee modify (constraint employye_default salary numeric(7,2) default 10000);
+
+insert into employee values(4,'dan','F',default,'ibx',2);
