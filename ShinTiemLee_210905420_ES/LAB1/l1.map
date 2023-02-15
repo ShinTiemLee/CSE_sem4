@@ -1,0 +1,12 @@
+ARM Linker, 5.03 [Build 76] [MDK-ARM Lite]
+
+==============================================================================
+
+Section Cross References
+
+    l1e.o(RESET) refers to l1e.o(mycode) for Reset_Handler
+    l1e.o(RESET) refers to l1ee.o(mycode) for Reset_Handler
+    l1ee.o(RESET) refers to l1e.o(mycode) for Reset_Handler
+    l1ee.o(RESET) refers to l1ee.o(mycode) for Reset_Handler
+    l1ee.o(mycode) refers to l1ee.o(mydata) for DST
+
