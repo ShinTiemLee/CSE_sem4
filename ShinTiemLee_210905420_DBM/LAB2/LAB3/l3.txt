@@ -1,0 +1,113 @@
+1. Find courses that ran in Fall 2009 or in Spring 2010
+
+select course_id from teaches where semester='Fall' and year=2009 union select course_id from teaches where semester='Spring' and year=2010; 
+
+-----------------------------------------------------------------------------------
+
+2. Find courses that ran in Fall 2009 and in spring 2010
+
+ select course_id from teaches where semester='Fall' and year=2009 intersect select course_id from teaches where semester='Spring' and year=2010;
+
+-----------------------------------------------------------------------------------
+
+3. Find courses that ran in Fall 2009 but not in Spring 2010
+
+ select course_id from teaches where semester='Fall' and year=2009 minus select course_id from teaches where semester='Spring' and year=2010;
+
+-----------------------------------------------------------------------------------
+
+4. Find the name of the course for which none of the students registered
+
+ select title from course minus select course_id from takes;
+
+OR
+
+select distinct(title) from course c,takes t where c.course_id not in t.course_id; 
+-----------------------------------------------------------------------------------
+
+5. Find courses offered in Fall 2009 and in Spring 2010.
+
+ select course_id from teaches where semester='Fall' and year=2009 and course_id in (select course_id from teaches where semester='Spring' and year=2010);
+-----------------------------------------------------------------------------------
+6. Find the total number of students who have taken course taught by the instructor 
+with ID 10101.
+
+select count(distinct(t.ID)) from takes t,teaches te where te.ID=10101 and te.course_id in t.course_id; 
+
+-----------------------------------------------------------------------------------
+7. Find courses offered in Fall 2009 but not in Spring 2010
+
+ select course_id from teaches where semester='Fall' and year=2009 and course_id not in (select course_id from teaches where semester='Spring' and year=2010);
+
+-----------------------------------------------------------------------------------
+
+8. Find the names of all students whose name is same as the instructor’s name.
+
+select s.name from student s,instructor i where s.name in i.name;
+
+-----------------------------------------------------------------------------------
+
+9. Find names of instructors with salary greater than that of some (at least one) instructor
+in the Biology department.
+
+select name from instructor where salary > some (select salary from instructor where dept_name='Biology');
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10. Find the names of all instructors whose salary is greater than the salary of all 
+instructors in the Biology department.
+
+select name from instructor where salary > all (select salary from instructor where dept_name='Biology');
+
+
+-----------------------------------------------------------------------------------
+11. Find the departments that have the highest average salary.
+
+select dept_name from instructor group by dept_name having avg(salary) >= all (select avg(salary) from instructor group by dept_name);
+
+-----------------------------------------------------------------------------------
+12. Find the names of those departments whose budget is lesser than the average salary 
+of all instructors.
+
+select dept_name from department where budget < (select avg(salary) from instructor)  ;
+
+-----------------------------------------------------------------------------------
+13. Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester.
+
+select course_id from teaches where semester='Fall' and year=2009 and exists (select course_id from teaches where semester='Spring' and year=2010); 
+
+-----------------------------------------------------------------------------------
+
+14. Find all students who have taken all courses offered in the Biology department.
+
+select distinct id from takes where exists (select course_id from course where dept_name='Biology');
+
+-----------------------------------------------------------------------------------
+
+15. Find all courses that were offered at most once in 2009.
+
+select course_id from course c where 1>=(select count(course_id) from section s where s.course_id=c.course_id and s.year-2009);
+-----------------------------------------------------------------------------------
+16. Find all the students who have opted at least two courses offered by CSE department.
+
+-----------------------------------------------------------------------------------
+17. Find the average instructors salary of those departments where the average salary is 
+greater than 42000
+
+select dept_name,avg_salary from (select dept_name,avg(salary) avg_salary from instructor group by dept_name)where avg_salary>42000;
+-----------------------------------------------------------------------------------
+18. Create a view all_courses consisting of course sections offered by Physics 
+department in the Fall 2009, with the building and room number of each section.
+
+
+-----------------------------------------------------------------------------------
+19. Select all the courses from all_courses view.
+
+-----------------------------------------------------------------------------------
+20. Create a view department_total_salary consisting of department name and total 
+salary of that department
+
+
+-----------------------------------------------------------------------------------
+
+
+
