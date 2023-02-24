@@ -98,14 +98,18 @@ select dept_name,avg_salary from (select dept_name,avg(salary) avg_salary from i
 18. Create a view all_courses consisting of course sections offered by Physics 
 department in the Fall 2009, with the building and room number of each section.
 
+create view all_courses as (select sec_id,building,room_number from section where year=2009 and semester='Fall' and  course_id in (select course_id from course where dept_name='Physics'));
 
 -----------------------------------------------------------------------------------
 19. Select all the courses from all_courses view.
+
+select course_id from all_courses;
 
 -----------------------------------------------------------------------------------
 20. Create a view department_total_salary consisting of department name and total 
 salary of that department
 
+create view department_total_salary as (select dept_name,sum(salary) totsal from instructor group by dept_name);
 
 -----------------------------------------------------------------------------------
 
