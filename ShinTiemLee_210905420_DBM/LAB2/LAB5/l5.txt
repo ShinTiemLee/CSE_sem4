@@ -1,0 +1,55 @@
+1. Retrieve the birth date and address of the employee(s) whose name is ‘John B. 
+Smith’. Retrieve the name and address of all employees who work for the 
+‘Research’ department.
+
+select bdate,address from employee where fname='John' and minit='B' and lname='Smith';
+select fname,minit,lname,address from employee natural join department where dname='Research';
+
+-----------------------------------------------------------------------------------------------
+
+2. For every project located in ‘Stanford’, list the project number, the controlling 
+department number, and the department manager’s last name, address, and birth 
+date.
+
+select pnumber,dnum,lname,address,bdate from project natural join department natural join employee where plocation='Starfford' and mgr_ssn=ssn;
+
+-----------------------------------------------------------------------------------------------
+
+3. Find all distinct salaries of employees.
+
+select distinct salary  from employee;
+
+-----------------------------------------------------------------------------------------------
+
+4. For each employee, retrieve the employee’s first and last name and the first and 
+last name of his or her immediate supervisor.
+
+
+-----------------------------------------------------------------------------------------------
+
+5. Make a list of all project numbers for projects that involve an employee whose 
+last name is ‘Smith’, either as a worker or as a manager of the department that 
+controls the project.
+
+
+
+-----------------------------------------------------------------------------------------------
+
+6. Retrieve all employees who reside is in Houston, Texas.
+
+
+-----------------------------------------------------------------------------------------------
+
+7. Show the resulting salaries if every employee working on the ‘ProductX’ project 
+is given a 10 percent raise.
+
+
+
+
+
+
+
+
+
+
+
